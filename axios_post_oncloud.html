@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body style="margin: 0">
+    <form onsubmit="handleFormSubmit(event)">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" />
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" />
+      <label for="phone">Phone No</label>
+      <input type="tel" name="phone" id="phone" />
+      <button type="submit">Submit</button>
+    </form>
+    <ul class="ul">
+          
+    </ul>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js"></script>
+  <script>
+
+    
+
+function handleFormSubmit(event){
+        event.preventDefault();
+        var userDetails = {
+            "username": event.target.username.value,
+            "email": event.target.email.value,
+            "phone" : event.target.phone.value,
+
+        };
+        // localStorage.setItem(userDetails['email'],JSON.stringify(userDetails));
+
+        axios.post('https://crudcrud.com/api/0cc75aa1c7a24092bf334e0730f05504/ravidata',userDetails)
+
+       let ul = document.querySelector('ul')
+      
+        let li = document.createElement('li');
+        li.innerHTML =  `${userDetails['username']}-${userDetails['email']}-${userDetails['phone']}<button onclick="del(event)">delete</button><button onclick="edit(event)">edit</button>`;
+        
+        ul.appendChild(li);
+    }
+    function del(event){
+      let ul = document.querySelector('ul');
+      
+      let arry= event.target.previousSibling.textContent.split('-');
+   
+      
+      localStorage.removeItem(arry[1]);
+      ul.removeChild(event.target.parentElement)
+    }
+    function edit(event){
+      let ul = document.querySelector('ul');
+
+      let arry= event.target.parentElement.firstChild.textContent.split('-');
+      
+      const username = document.querySelector('#username')
+    const email = document.querySelector('#email')
+    const phone = document.querySelector('#phone')
+        username.value = arry[0];
+        email.value = arry[1];
+        phone.value = arry[2];
+        localStorage.removeItem(arry[1]);
+      ul.removeChild(event.target.parentElement)
+
+    }
+    //   module.exports = handleFormSubmit;
+ 
+
+  </script>
+</html>
